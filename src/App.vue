@@ -41,4 +41,3 @@ onErrorCaptured((e: Error) => {
     align-items: center;
   }
 </style>
- 
