@@ -10,13 +10,15 @@ let data = reactive({
     pokedex: Array<any>()
 });
 
-const { result } = useQuery(gql`
+let pokedata: Array<any> = [];
+
+useQuery(gql`
       query pokedataQuery {
   pokemon: pokemon_v2_pokemonspecies(where: {pokemon_v2_generation: {name: {_eq: "generation-i"}}}, order_by: {id: asc}) {
     name
     id
     pokemon_v2_pokemons {
-      pokemon_v2_pokemonsprites {
+      sprites: pokemon_v2_pokemonsprites {
         sprites
       }
       stats: pokemon_v2_pokemonstats {
@@ -28,12 +30,13 @@ const { result } = useQuery(gql`
     }
   }
 }
-    `)
-
-    watch(result, (newdata) => {
-        console.log(newdata)
+    `).onResult((result) => { 
+      console.log(result.data.pokemon)
+      result.data.pokemon.forEach((pokemon: any) => {
+        pokemon.pokemon_v2_pokemons[0].sprites[0].sprites = JSON.parse(pokemon.pokemon_v2_pokemons[0].sprites[0].sprites)
+      });
+      console.log(result.data.pokemon)
     })
-
 
 function updatePokedex(newdex: any) {
     data.pokedex = newdex;
