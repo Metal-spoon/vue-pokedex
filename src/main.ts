@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {faAngleDown, faCheck, faPlus, faSpinner, faTrashCan, faTriangleExclamation, faXmark} from '@fortawesome/free-solid-svg-icons'
 import {faAngleRight} from '@fortawesome/free-solid-svg-icons'
 import { DefaultApolloClient } from '@vue/apollo-composable'
-import { ApolloClient } from '@apollo/client'
+import ApolloClient from 'apollo-boost'
 
 library.add(faAngleDown);
 library.add(faAngleRight);
@@ -16,5 +16,8 @@ library.add(faXmark);
 library.add(faCheck);
 library.add(faTriangleExclamation);
 library.add(faSpinner);
+const apolloClient = new ApolloClient({
+    uri: 'https://beta.pokeapi.co/graphql/v1beta'
+}) 
 
-createApp(App).provide(DefaultApolloClient, 'apolloClient').component('font-awesome-icon', FontAwesomeIcon).mount('#app')
+createApp(App).provide(DefaultApolloClient, apolloClient).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
