@@ -36,6 +36,7 @@ useQuery(gql`
         pokemon.pokemon_v2_pokemons[0].sprites[0].sprites = JSON.parse(pokemon.pokemon_v2_pokemons[0].sprites[0].sprites)
       });
       console.log(result.data.pokemon)
+      pokedata = result.data.pokemon
     })
 
 function updatePokedex(newdex: any) {
