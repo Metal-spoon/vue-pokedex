@@ -14,12 +14,18 @@ function format(text: string) {
     text = text.charAt(0).toUpperCase() + text.slice(1);
     return text;
 }
+
+function parseSpriteUri(spriteUri: string) {
+    //TODO: move into environment variable
+    spriteUri = spriteUri.replace(/\/media\//g, "https://raw.githubusercontent.com/PokeAPI/sprites/master/");
+    return spriteUri;
+}
 </script>
 
 <template>
         <div class="pokemon-card">
             <span class="pokemon-id">#{{pokemon.id}}</span>
-            <img :src="pokemon.sprites.front_default" width="96" />
+            <img :src="parseSpriteUri(pokemon.pokemon_v2_pokemons[0].sprites[0].sprites.front_default)" width="96" />
             <b>Info</b>
             <table class="pokemon-info">
                 <tr>
