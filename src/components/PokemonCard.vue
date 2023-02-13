@@ -34,7 +34,7 @@ function parseSpriteUri(spriteUri: string) {
                 </tr>
                 <tr>
                     <td>Weight:</td>
-                    <td>{{ pokemon.weight }}</td>
+                    <td>{{ pokemon.pokemon_v2_pokemons[0].weight }}</td>
                 </tr>
             </table>
             <div class="stats-header" @click="showStats = !showStats">
@@ -42,9 +42,9 @@ function parseSpriteUri(spriteUri: string) {
                 <font-awesome-icon :icon="showStats ? 'fa-angle-down' : 'fa-angle-right'" />
             </div>
             <table v-show="showStats" class="pokemon-info">
-                <tr v-for="stat in pokemon.stats">
+                <tr v-for="stat in pokemon.pokemon_v2_pokemons[0].stats">
                     <td>{{ format(stat.stat.name) }}</td>
-                    <td>{{ stat.base_stat }}</td>
+                    <td>{{ stat.value }}</td>
                 </tr>
             </table>
             <slot name="controls"></slot>

@@ -27,6 +27,7 @@ useQuery(gql`
         }
         value: base_stat
       }
+      weight
     }
   }
 }
