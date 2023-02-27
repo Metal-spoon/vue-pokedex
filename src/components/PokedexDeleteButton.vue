@@ -1,4 +1,6 @@
 <script async setup lang="ts">
+import { json } from 'stream/consumers';
+
 const props = defineProps({
     pokemonId: {
         type: Number,
@@ -7,13 +9,16 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-    (e: 'response-received', response: Response, caller: number): void
+    (e: 'response-received', response: Array<number>, caller: number): void
     (e: 'start-spinner', caller: number): void
 }>()
 
 async function deletePokemon() {
     emit('start-spinner', props.pokemonId)
-    await fetch('http://localhost:5000/api/Pokemon/' + props.pokemonId + '/pokedex', {method: 'DELETE'}).then(res => emit('response-received', res, props.pokemonId));
+    let dex: Array<number> = JSON.parse(localStorage.getItem("pokedex") || "");
+    const updatedDex: Array<number> = dex.filter(x => x !== props.pokemonId)
+    localStorage.setItem("pokedex", JSON.stringify(updatedDex))
+    emit('response-received', updatedDex, props.pokemonId)
 }
 </script>
 

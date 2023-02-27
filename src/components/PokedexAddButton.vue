@@ -7,13 +7,16 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-    (e: 'response-received', response: Response, caller: number): void
+    (e: 'response-received', response: Array<number>, caller: number): void
     (e: 'start-spinner', caller: number): void
 }>()
 
 async function addPokemon() {
     emit('start-spinner', props.pokemonId)
-    await fetch('http://localhost:5000/api/Pokemon/' + props.pokemonId + '/pokedex', {method: 'POST'}).then(res => emit('response-received', res, props.pokemonId))
+    let dex: Array<number> = JSON.parse(localStorage.getItem("pokedex") || "");
+    dex.push(props.pokemonId);
+    localStorage.setItem("pokedex", JSON.stringify(dex))
+    emit('response-received', dex, props.pokemonId)
 }
 </script>
 

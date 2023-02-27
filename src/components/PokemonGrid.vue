@@ -12,7 +12,7 @@ const props = defineProps({
         required: true
     },
     pokedex: {
-        type: Array<any>,
+        type: Array<number>,
         required: false,
         default: []
     },
@@ -47,21 +47,13 @@ let data = reactive({
     cardsWithOverlay: Array<overlay>()
 })
 
-async function handleResponse(response: Response, caller: number) {
-    if (response.ok) {
-        const pokedex = await response.json();
-        removeOverlay(caller);
-        emit('pokedex-update', pokedex);
-    } else {
-        let errormessage = await response.text();
-        if (response.status === 404) errormessage = 'Pokemon not found!'
-        removeOverlay(caller);
-        addOverlay(caller, errormessage, 'fa-triangle-exclamation', true);
-    }
+async function handleUpdate(newDex: Array<number>, caller: number) {
+    removeOverlay(caller);
+    emit('pokedex-update', newDex);
 }
 
 function isInDex(pokemonId: number) {
-    return props.pokedex.some((x) => x.id === pokemonId)
+    return props.pokedex.some((x) => x === pokemonId)
 }
 
 function addOverlay(pokemonId: number, message: string, icon: string, removeable: boolean) {
@@ -102,9 +94,9 @@ const caughtOverlay: overlay = new overlay(0, 'Caught!', 'fa-check', false)
     <transition-group name="grid" tag="div" class="pokemon-grid" @before-leave='beforeLeave'>
         <pokemon-card :pokemon="pokemon" v-for="pokemon in pokedata" :key="pokemon.id">
             <template v-slot:controls>
-                <pokedex-add-button v-if="showAddButton" @response-received="handleResponse"
+                <pokedex-add-button v-if="showAddButton" @response-received="handleUpdate"
                     @start-spinner="addOverlay(pokemon.id, '', 'fa-spinner', false)" :pokemon-id="pokemon.id" />
-                <pokedex-delete-button v-if="showDeleteButton" @response-received="handleResponse"
+                <pokedex-delete-button v-if="showDeleteButton" @response-received="handleUpdate"
                     @start-spinner="addOverlay(pokemon.id, '', 'fa-spinner', false)" :pokemon-id="pokemon.id" />
                 <card-overlay :overlay="caughtOverlay" v-if="isInDex(pokemon.id) && showCaughtOverlay" />
                 <card-overlay v-else-if="showOverlay(pokemon.id)" :overlay="getOverlay(pokemon.id)"

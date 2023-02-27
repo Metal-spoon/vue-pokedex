@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onErrorCaptured, reactive, ref } from 'vue';
 import Pokedex from './components/Pokedex.vue';
+import Spinner from './components/Spinner.vue';
 
 let data = reactive({
   showError: false,
@@ -22,15 +23,13 @@ onErrorCaptured((e: Error) => {
 <Suspense v-else>
   <Pokedex />
   <template #fallback>
-    <div class="overlay">
-      <font-awesome-icon size="4x" class="spin" icon="fa-solid fa-spinner" />
-    </div>
+    <Spinner/>
   </template>
 </Suspense>
 
 </template>
 
-<style scoped>
+<style>
   .overlay {
     position: fixed;
     height: 100%;

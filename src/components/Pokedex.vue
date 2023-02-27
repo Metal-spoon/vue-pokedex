@@ -1,16 +1,25 @@
 <script setup lang="ts">
 import ModalDialog from './ModalDialog.vue';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import PokemonGrid from './PokemonGrid.vue';
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
+import Spinner from './Spinner.vue';
 
 const showPickerModal = ref(false);
+let isLoading = ref(true);
+
 let data = reactive({
-    pokedex: Array<any>()
+    pokedex: Array<number>()
 });
 
 let pokedata: Array<any> = [];
+
+if (!localStorage.getItem("pokedex")) {
+  localStorage.setItem("pokedex", "[]")
+}
+
+data.pokedex = JSON.parse(localStorage.getItem("pokedex") || "[]")
 
 useQuery(gql`
       query pokedataQuery {
@@ -31,25 +40,29 @@ useQuery(gql`
     }
   }
 }
-    `).onResult((result) => { 
-      console.log(result.data.pokemon)
+    `).onResult((result) => {
       result.data.pokemon.forEach((pokemon: any) => {
         pokemon.pokemon_v2_pokemons[0].sprites[0].sprites = JSON.parse(pokemon.pokemon_v2_pokemons[0].sprites[0].sprites)
-      });
-      console.log(result.data.pokemon)
+      })
       pokedata = result.data.pokemon
-    })
+      isLoading.value = false
+    }
+      
+    )
 
-function updatePokedex(newdex: any) {
+function updatePokedex(newdex: any): void {
+  
     data.pokedex = newdex;
 }
 
 const pokedexPokemonDetails = computed(
-    () => { return pokedata.filter(x => data.pokedex.some(y => y.id === x.id)) },
+    () => { return pokedata.filter(x => data.pokedex.some(y => y === x.id)) },
 );
 </script>
 
 <template>
+  <spinner v-if="isLoading"/>
+  <template v-else>
     <h2>Your pokedex</h2>
     <b>Click the grey card to add some more!</b>
     <pokemon-grid @pokedex-update="updatePokedex" :pokedata="pokedexPokemonDetails" :show-delete-button="true"
@@ -63,6 +76,7 @@ const pokedexPokemonDetails = computed(
             :show-add-button="true" :show-caught-overlay="true">
         </pokemon-grid>
     </modal-dialog>
+  </template>
 </template>
 
 <style lang="scss">
