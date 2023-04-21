@@ -5,6 +5,7 @@ import PokedexAddButton from './PokedexAddButton.vue';
 import PokedexDeleteButton from './PokedexDeleteButton.vue';
 import PokemonCard from './PokemonCard.vue';
 import CardOverlay from './CardOverlay.vue';
+import DropDownSelector from './DropDownSelector.vue';
 
 const props = defineProps({
     pokedata: {
@@ -90,8 +91,11 @@ const caughtOverlay: overlay = new overlay(0, 'Caught!', 'fa-check', false)
 </script>
 
 <template>
-
+<div>
+    <drop-down-selector label="Generations" :options="[{label: 'test'}, {label: 'test2'}, {label: 'test3'}]"></drop-down-selector>
+</div>
     <transition-group name="grid" tag="div" class="pokemon-grid" @before-leave='beforeLeave'>
+        
         <pokemon-card :pokemon="pokemon" v-for="pokemon in pokedata" :key="pokemon.id">
             <template v-slot:controls>
                 <pokedex-add-button v-if="showAddButton" @response-received="handleUpdate"
