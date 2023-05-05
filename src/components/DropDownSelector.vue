@@ -21,18 +21,42 @@ let showOptions = ref(false);
 <div class="dropdown-container">
 <div class="dropdown" @click="showOptions = !showOptions ">
     <span>{{props.label}}</span>
-    <font-awesome-icon icon="fa-solid fa-circle-arrow-right"/>
+    <font-awesome-icon :class="[showOptions ? 'dropdown-shown' : 'dropdown-hidden', 'dropdown-icon'] " icon="fa-solid fa-circle-arrow-right"/>
 </div>
+<transition name="dropdown-list">
 <ul class="dropdown-options" v-show="showOptions">
     <li class="dropdown-option" v-for="option in props.options">
         <span>{{option.label}}</span>
         <input type="checkbox"/>
     </li>
 </ul>
+</transition>
 </div>
 </template>
 
 <style lang="scss">
+
+    .dropdown-shown {
+        transform: rotate(90deg);
+        transition: all 0.3s linear;
+    }
+
+    .dropdown-hidden {
+        transform: rotate(0deg);
+    }
+
+
+    .dropdown-list-enter-active {
+        transition: all 0.3s linear;
+        transform-origin: top center;
+    }
+
+
+    .dropdown-list-enter-from,
+    .dropdown-list-leave-to {
+        transform: scaleY(0);
+    }
+
     .dropdown {
         display: flex;
         flex-direction: row;

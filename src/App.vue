@@ -21,7 +21,7 @@ onErrorCaptured((e: Error) => {
   <span>{{data.errorMessage}}</span>
 </div>
 <Suspense v-else>
-  <Pokedex />
+  <Pokedex/>
   <template #fallback>
     <Spinner/>
   </template>
