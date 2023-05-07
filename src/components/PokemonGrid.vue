@@ -6,6 +6,7 @@ import PokedexDeleteButton from './PokedexDeleteButton.vue';
 import PokemonCard from './PokemonCard.vue';
 import CardOverlay from './CardOverlay.vue';
 import DropDownSelector from './DropDownSelector.vue';
+import GenerationFilterSelector from './GenerationFilterSelector.vue';
 
 const props = defineProps({
     pokedata: {
@@ -92,7 +93,7 @@ const caughtOverlay: overlay = new overlay(0, 'Caught!', 'fa-check', false)
 
 <template>
 <div>
-    <drop-down-selector label="Generations" :options="[{label: 'test'}, {label: 'test2'}, {label: 'test3'}]"></drop-down-selector>
+    <generation-filter-selector/>
 </div>
     <transition-group name="grid" tag="div" class="pokemon-grid" @before-leave='beforeLeave'>
         

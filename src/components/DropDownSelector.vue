@@ -24,7 +24,7 @@ let showOptions = ref(false);
     <font-awesome-icon :class="[showOptions ? 'dropdown-shown' : 'dropdown-hidden', 'dropdown-icon'] " icon="fa-solid fa-circle-arrow-right"/>
 </div>
 <transition name="dropdown-list">
-<ul class="dropdown-options" v-show="showOptions">
+<ul class="dropdown-options" v-if="showOptions">
     <li class="dropdown-option" v-for="option in props.options">
         <span>{{option.label}}</span>
         <input type="checkbox"/>
@@ -38,7 +38,7 @@ let showOptions = ref(false);
 
     .dropdown-shown {
         transform: rotate(90deg);
-        transition: all 0.3s linear;
+        transition: all 0.2s linear;
     }
 
     .dropdown-hidden {
@@ -47,7 +47,7 @@ let showOptions = ref(false);
 
 
     .dropdown-list-enter-active {
-        transition: all 0.3s linear;
+        transition: all 0.2s linear;
         transform-origin: top center;
     }
 
